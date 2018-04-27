@@ -54,3 +54,8 @@ buck-out/
 
 # Bundle artifact
 *.jsbundle
+
+# Custom
+ios/build
+android/build
+android/app/build
