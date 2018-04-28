@@ -8,7 +8,7 @@ class ButtonEx extends Component {
   render() {
     return(
       <Col>
-        <Button style={Styles.button} light>
+        <Button style={Styles.button} light={this.props.pin?true:false}>
           <Col>
             <Icon name={this.props.icon} style={[Styles.center]}/>
           </Col>

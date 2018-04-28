@@ -14,19 +14,52 @@ class Home extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      loading: true,
+      connectionState: 0,
       data: {}
     };
   }
+  componentDidMount() {
+    global.ws = new WebSocket('ws://192.168.4.1:81');
+
+    ws.onopen = () => {
+      this.setState({connectionState: 2})
+    };
+
+    ws.onmessage = (e) => {
+      console.log("WS Message",e.data);
+      var obj = JSON.parse(e.data);
+      console.log(obj);
+      if(obj.type == "STATUS") {
+        console.log(obj.data);
+        this.setState({data:obj.data})
+      }
+    };
+
+    ws.onerror = (e) => {
+      this.setState({connectionState: 1});
+      console.log("WS Error",e.message);
+    };
+
+    ws.onclose = (e) => {
+      this.setState({connectionState: 0});
+      console.log(e.code, e.reason);
+    };
+  }
   render() {
-    if(this.state.loading == true) {
+    if(this.state.connectionState == 0) {
       return(
         <Container style={Styles.container}>
           <Grid>
             <Col style={{marginTop:'50%'}}>
-              <Spinner color="black"/>
+              <Spinner color="white"/>
             </Col>
           </Grid>
+        </Container>
+      )
+    }
+    if(this.state.connectionState == 1) {
+      return(
+        <Container style={Styles.container}>
         </Container>
       )
     }
@@ -36,13 +69,13 @@ class Home extends Component {
           <Grid>
             {/* <Text style={{marginLeft:10, marginTop:10, alignSelf:'center'}}>Lights</Text> */}
             <Row>
-              <ButtonEx name="Light 1" icon="lightbulb-o"/>
-              <ButtonEx name="Light 2" icon="lightbulb-o"/>
+              <ButtonEx name="Light 1" icon="lightbulb-o" pin={this.state.data[1]}/>
+              <ButtonEx name="Light 2" icon="lightbulb-o" pin={this.state.data[2]}/>
             </Row>
             {/* <Text style={{marginLeft:10, marginTop:10, alignSelf:'center'}}>Fans</Text> */}
             <Row>
-              <ButtonEx name="Fan 1" icon="bolt"/>
-              <ButtonEx name="Fan 2" icon="bolt"/>
+              <ButtonEx name="Fan 1" icon="bolt" pin={this.state.data[3]}/>
+              <ButtonEx name="Fan 2" icon="bolt" pin={this.state.data[4]}/>
             </Row>
           </Grid>
         </Content>
