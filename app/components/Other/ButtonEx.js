@@ -8,7 +8,7 @@ class ButtonEx extends Component {
   render() {
     return(
       <Col>
-        <Button style={Styles.button} light={this.props.pin?true:false}>
+        <Button style={Styles.button} light={this.props.status==1?true:false} onPress={this.onPress.bind(this)}>
           <Col>
             <Icon name={this.props.icon} style={[Styles.center]}/>
           </Col>
@@ -16,6 +16,13 @@ class ButtonEx extends Component {
         <Text style={[Styles.center]}>{this.props.name}</Text>
       </Col>
     )
+  }
+  onPress() {
+    var data = {
+      type: 'TOGGLE',
+      pin: this.props.pin,
+    }
+    global.ws.send(JSON.stringify(data));
   }
 }
 

@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Alert } from 'react-native';
 import { Container, Header, Content, Button, Text, Icon } from 'native-base';
 import { Grid, Row, Col, H3 } from 'native-base';
 import { Spinner} from 'native-base';
@@ -19,8 +20,9 @@ class Home extends Component {
     };
   }
   componentDidMount() {
-    global.ws = new WebSocket('ws://192.168.4.1:81');
-
+    this.setState({connectionState: 0});
+    global.ws = new WebSocket('ws://192.168.0.120:81');
+    console.log(ws);
     ws.onopen = () => {
       this.setState({connectionState: 2})
     };
@@ -38,6 +40,7 @@ class Home extends Component {
     ws.onerror = (e) => {
       this.setState({connectionState: 1});
       console.log("WS Error",e.message);
+      this.callForError();
     };
 
     ws.onclose = (e) => {
@@ -69,17 +72,31 @@ class Home extends Component {
           <Grid>
             {/* <Text style={{marginLeft:10, marginTop:10, alignSelf:'center'}}>Lights</Text> */}
             <Row>
-              <ButtonEx name="Light 1" icon="lightbulb-o" pin={this.state.data[1]}/>
-              <ButtonEx name="Light 2" icon="lightbulb-o" pin={this.state.data[2]}/>
+              <ButtonEx name="Light 1" icon="lightbulb-o" pin={1} status={this.state.data[1]}/>
+              <ButtonEx name="Light 2" icon="lightbulb-o" pin={2} status={this.state.data[2]}/>
             </Row>
             {/* <Text style={{marginLeft:10, marginTop:10, alignSelf:'center'}}>Fans</Text> */}
             <Row>
-              <ButtonEx name="Fan 1" icon="bolt" pin={this.state.data[3]}/>
-              <ButtonEx name="Fan 2" icon="bolt" pin={this.state.data[4]}/>
+              <ButtonEx name="Fan 1" icon="bolt" pin={3} status={this.state.data[3]}/>
+              <ButtonEx name="Fan 2" icon="bolt" pin={4} status={this.state.data[4]}/>
             </Row>
           </Grid>
         </Content>
       </Container>
+    )
+  }
+  callForError() {
+    Alert.alert(
+      'No Device Found',
+      'We where not able to find any switch devices.',
+      [
+        {text: 'Retry', onPress: () => {
+          global.ws = null;
+          this.componentDidMount();
+        }},
+        {text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
+      ],
+      { cancelable: false }
     )
   }
 }
