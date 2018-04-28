@@ -10,7 +10,7 @@ class ButtonEx extends Component {
       <Col>
         <Button style={Styles.button} light={this.props.status==1?true:false} onPress={this.onPress.bind(this)}>
           <Col>
-            <Icon name={this.props.icon} style={[Styles.center]}/>
+            <Icon name={this.props.icon} style={[Styles.center,this.props.status==0?Styles.white:{}]}/>
           </Col>
         </Button>
         <Text style={[Styles.center]}>{this.props.name}</Text>
@@ -37,6 +37,9 @@ const Styles = StyleSheet.create({
   },
   center: {
     alignSelf: 'center',
+  },
+  white: {
+    color: '#FFF'
   }
 });
 
