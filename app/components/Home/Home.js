@@ -38,7 +38,6 @@ class Home extends Component {
     };
 
     ws.onerror = (e) => {
-      this.setState({connectionState: 1});
       console.log("WS Error",e.message);
       this.callForError();
     };
@@ -86,6 +85,8 @@ class Home extends Component {
     )
   }
   callForError() {
+    this.setState({connectionState: 1});
+    global.ws = null;
     Alert.alert(
       'No Device Found',
       'We where not able to find any switch devices.',
