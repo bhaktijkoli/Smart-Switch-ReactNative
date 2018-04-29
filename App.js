@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { StackNavigator } from 'react-navigation';
 
 import Home from './app/components/Home/Home'
+import WifiScan from './app/components/WifiScan/WifiScan'
 
 import { Container, Content, Text, StyleProvider } from 'native-base';
 import getTheme from './native-base-theme/components';
@@ -18,7 +19,6 @@ export default class App extends Component {
 }
 
 const AppNavigator = StackNavigator({
-  Home: {
-    screen: Home,
-  },
+  Home: { screen: Home, },
+  WifiScan: { screen: WifiScan, },
 });

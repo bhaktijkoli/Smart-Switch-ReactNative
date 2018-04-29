@@ -8,4 +8,11 @@ export default StyleSheet.create({
   mgtop: {
     marginTop:20,
   },
+  mglist: {
+    marginLeft:10,
+    marginRight:10,
+  },
+  mg10: {
+    margin:10,
+  }
 });

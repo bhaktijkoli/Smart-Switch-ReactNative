@@ -3,12 +3,16 @@ import { Alert, StatusBar } from 'react-native';
 import { Container, Header, Content, Button, Text, Icon } from 'native-base';
 import { Grid, Row, Col, H3 } from 'native-base';
 import { Spinner} from 'native-base';
+import { NavigationActions } from 'react-navigation'
+
+import axios from 'axios'
 import Zeroconf from 'react-native-zeroconf'
 
 import ButtonEx from './../Other/ButtonEx'
 
 import Styles from './../../utils/styles';
 
+const WifiScanAction = NavigationActions.reset({ index: 0, actions: [ NavigationActions.navigate({ routeName: 'WifiScan' }) ] })
 
 
 class Home extends Component {
@@ -24,7 +28,11 @@ class Home extends Component {
     };
   }
   componentDidMount() {
+    global.errorShow = false;
     this.setState({connectionState: 0});
+    axios.get('http://192.168.4.1/').then((res)=>{
+      if(res.data == "1") { this.props.navigation.dispatch(WifiScanAction) }
+    })
     global.zeroconf = new Zeroconf();
     zeroconf.scan(type = 'ws', protocol = 'tcp', domain = 'local.');
     zeroconf.on('start', () => console.log('The scan has started.'))
@@ -41,8 +49,13 @@ class Home extends Component {
       }
     })
     setTimeout(function () {
-      zeroconf.stop();
+      if(zeroconf) zeroconf.stop();
     }.bind(this), 5000);
+  }
+  componentWillUnmount() {
+    global.ws = null;
+    global.zeroconf = null;
+    global.errorShow = true;
   }
   startWs() {
     if(this.state.address.length == 0) return;
@@ -111,14 +124,16 @@ class Home extends Component {
   }
   callForError() {
     this.setState({connectionState: 1});
+    if(global.errorShow == true) return;
     global.ws = null;
     global.zeroconf = null;
+    global.errorShow = true;
     Alert.alert(
       'No Device Found',
       'We where not able to find any switch devices.',
       [
         {text: 'Retry', onPress: () => {
-          global.ws = null;
+          global.errorShow = false;
           this.componentDidMount();
         }},
         {text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
