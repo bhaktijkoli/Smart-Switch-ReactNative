@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Alert } from 'react-native';
+import { Alert, StatusBar } from 'react-native';
 import { Container, Header, Content, Button, Text, Icon } from 'native-base';
 import { Grid, Row, Col, H3 } from 'native-base';
 import { Spinner} from 'native-base';
@@ -75,6 +75,7 @@ class Home extends Component {
     if(this.state.connectionState == 0) {
       return(
         <Container style={Styles.container}>
+          <StatusBar barStyle="light-content"/>
           <Grid>
             <Col style={{marginTop:'50%'}}>
               <Spinner color="white"/>
