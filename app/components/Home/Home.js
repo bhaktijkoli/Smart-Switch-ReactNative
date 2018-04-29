@@ -3,10 +3,13 @@ import { Alert } from 'react-native';
 import { Container, Header, Content, Button, Text, Icon } from 'native-base';
 import { Grid, Row, Col, H3 } from 'native-base';
 import { Spinner} from 'native-base';
+import Zeroconf from 'react-native-zeroconf'
 
 import ButtonEx from './../Other/ButtonEx'
 
 import Styles from './../../utils/styles';
+
+
 
 class Home extends Component {
   static navigationOptions = {
@@ -15,14 +18,35 @@ class Home extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      address: '',
       connectionState: 0,
       data: {}
     };
   }
   componentDidMount() {
     this.setState({connectionState: 0});
-    global.ws = new WebSocket('ws://192.168.0.120:81');
-    console.log(ws);
+    global.zeroconf = new Zeroconf();
+    zeroconf.scan(type = 'ws', protocol = 'tcp', domain = 'local.');
+    zeroconf.on('start', () => console.log('The scan has started.'))
+    zeroconf.on('stop', () => {
+      if(this.state.address.length == 0) {
+        this.callForError();
+      }
+      console.log('The scan has stoped.')
+    })
+    zeroconf.on("resolved", (data)=>{
+      if(data.name == "touchswitch") {
+        this.setState({address:data.addresses});
+        this.startWs();
+      }
+    })
+    setTimeout(function () {
+      zeroconf.stop();
+    }.bind(this), 5000);
+  }
+  startWs() {
+    if(this.state.address.length == 0) return;
+    global.ws = new WebSocket('ws://'+this.state.address+':81');
     ws.onopen = () => {
       this.setState({connectionState: 2})
     };
@@ -87,6 +111,7 @@ class Home extends Component {
   callForError() {
     this.setState({connectionState: 1});
     global.ws = null;
+    global.zeroconf = null;
     Alert.alert(
       'No Device Found',
       'We where not able to find any switch devices.',
