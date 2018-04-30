@@ -112,13 +112,13 @@ class Home extends Component {
           <Grid>
             {/* <Text style={{marginLeft:10, marginTop:10, alignSelf:'center'}}>Lights</Text> */}
             <Row>
-              <ButtonEx name="Light 1" icon="bolt" pin={3} status={this.state.data[3]}/>
+              <ButtonEx name="Light 1" icon="lightbulb-o" pin={3} status={this.state.data[3]}/>
               <ButtonEx name="Light 2" icon="lightbulb-o" pin={2} status={this.state.data[2]}/>
             </Row>
             {/* <Text style={{marginLeft:10, marginTop:10, alignSelf:'center'}}>Fans</Text> */}
             <Row>
-              <ButtonEx name="Fan 1" icon="bolt" pin={4} status={this.state.data[4]}/>
-              <ButtonEx name="Fan 2" icon="lightbulb-o" pin={1} status={this.state.data[1]}/>
+              <ButtonEx name="Light 3" icon="lightbulb-o" pin={4} status={this.state.data[4]}/>
+              <ButtonEx name="Light 4" icon="lightbulb-o" pin={1} status={this.state.data[1]}/>
             </Row>
           </Grid>
         </Content>
