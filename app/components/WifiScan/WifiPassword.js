@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Alert, TouchableOpacity } from 'react-native';
-import { Container, Header, Content, Form, Item, Input, Label, H3, Button, Text } from 'native-base';
+import { Container, Header, Content, Form, Item, Input, Label, H3, Button, Text, Spinner } from 'native-base';
 import axios from 'axios'
 
 import Styles from './../../utils/styles';
