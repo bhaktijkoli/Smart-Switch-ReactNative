@@ -100,6 +100,7 @@ class Home extends Component {
     if(this.state.connectionState == 1) {
       return(
         <Container style={Styles.container}>
+          <StatusBar barStyle="light-content"/>
         </Container>
       )
     }
