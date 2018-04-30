@@ -52,7 +52,7 @@ class WifiScan extends Component {
         <Content style={Styles.mgtop}>
           <List dataArray={this.state.networks}
             renderRow={(n) =>
-              <ListItem style={Styles.mglist}>
+              <ListItem style={Styles.mglist} onPress={()=>this.onPress(n)}>
                 <Left><Text>{n.name}</Text></Left>
                 <Right>{this.getEncrpytType(n)}</Right>
               </ListItem>
@@ -62,6 +62,9 @@ class WifiScan extends Component {
         </Content>
       </Container>
     )
+  }
+  onPress(item) {
+    this.props.navigation.navigate('WifiPassword', {item:item});
   }
   getEncrpytType(item) {
     if(item.encryption==7) return null;
