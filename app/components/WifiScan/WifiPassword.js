@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Alert, TouchableOpacity } from 'react-native';
-import { Container, Header, Content, Form, Item, Input, Label, H3, Button, Text, Spinner } from 'native-base';
+import { ListItem } from 'native-base';
+import { Container, Header, Content, Form, Item, Input, Label, H3, CheckBox, Button, Text, Spinner } from 'native-base';
 import axios from 'axios'
 
 import Styles from './../../utils/styles';
@@ -14,7 +15,7 @@ class WifiPassword extends Component {
   constructor(props) {
     super(props);
     console.log(this.props.navigation.state.params);
-    this.state={item:this.props.navigation.state.params.item, password: '', process:false}
+    this.state={item:this.props.navigation.state.params.item, password: '', process:false, passwordVisible:false}
   }
   render() {
     return(
@@ -24,8 +25,12 @@ class WifiPassword extends Component {
           <Form>
             <Item floatingLabel style={{marginRight:10, marginLeft:10}}>
               <Label style={{color:'#FFF'}}>Password</Label>
-              <Input value={this.state.password} onChangeText={v=>this.setState({password:v})}/>
+              <Input secureTextEntry={!this.state.passwordVisible} value={this.state.password} onChangeText={v=>this.setState({password:v})}/>
             </Item>
+            <ListItem onPress={()=>this.setState({passwordVisible:!this.state.passwordVisible})} style={{marginRight:10, marginLeft:10}}>
+              <CheckBox onPress={()=>this.setState({passwordVisible:!this.state.passwordVisible})} checked={this.state.passwordVisible} style={{marginRight:20}}/>
+              <Text>Show password</Text>
+            </ListItem>
             <Button light style={{marginRight:10, marginLeft:10, marginTop:20}} block onPress={this.onPress.bind(this)}>
               {this.getButtonText()}
             </Button>

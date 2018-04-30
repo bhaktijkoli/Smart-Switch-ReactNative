@@ -12,7 +12,7 @@ import Styles from './../../utils/styles';
 
 class WifiScan extends Component {
   static navigationOptions = {
-    headerTitle: "Touch Switch Wifi",
+    headerTitle: "Smart Switch Wifi",
   };
   constructor(props) {
     global.zeroconf, global.ws = null;
