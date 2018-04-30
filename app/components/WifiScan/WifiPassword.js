@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Alert, TouchableOpacity } from 'react-native';
+import RNExitApp from 'react-native-exit-app';
 import { ListItem } from 'native-base';
 import { Container, Header, Content, Form, Item, Input, Label, H3, CheckBox, Button, Text, Spinner } from 'native-base';
 import axios from 'axios'
@@ -49,7 +50,7 @@ class WifiPassword extends Component {
         Alert.alert(
           'Connected',
           'Now connect to the same wifi from your smartphone and restart the app.',
-          [ {text: 'OK', onPress: () => console.log('OK Pressed')}, ],
+          [ {text: 'OK', onPress: () => RNExitApp.exitApp()}, ],
           { cancelable: false }
         )
       }else {

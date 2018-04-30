@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Alert, StatusBar } from 'react-native';
+import RNExitApp from 'react-native-exit-app';
 import { Container, Header, Content, Button, Text, Icon } from 'native-base';
 import { Grid, Row, Col, H3 } from 'native-base';
 import { Spinner} from 'native-base';
@@ -138,7 +139,7 @@ class Home extends Component {
           global.errorShow = false;
           this.componentDidMount();
         }},
-        {text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
+        {text: 'Cancel', onPress: () => RNExitApp.exitApp(), style: 'cancel'},
       ],
       { cancelable: false }
     )
